@@ -30,11 +30,6 @@ def load_urls_file(urls_file):
         urls = f.readlines()
     return urls
 
-def flush_progress_bar(barname, rate):
-    bar_num = int(rate/0.05)+1
-    bar = ('#' * bar_num).ljust(20, '-')
-    sys.stdout.write(f"\r{barname} : [{bar}] {rate*100:.2f}%")
-
 def run_signage(display, interval, scroll_speed, urls):
     os.environ['DISPLAY'] = display
     driver = webdriver.Chrome()
