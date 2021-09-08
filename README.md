@@ -58,6 +58,8 @@ optional arguments:
                         URL list file path
   -s SCROLL_SPEED, --scroll_speed SCROLL_SPEED
                         Page scroll speed (min 1)
+  -z ZOOM_RATE, --zoom_rate ZOOM_RATE
+                        Browser zoom rate
 
 # 実行
 $ python src/main.py　--display=":0.0" -u=urls -s=10 -i=10

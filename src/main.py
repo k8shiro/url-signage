@@ -13,6 +13,7 @@ def get_args():
     parser.add_argument('-i', '--interval', help='Interval of page transfer (seconds) ', type=int, default='60')
     parser.add_argument('-u', '--urls_file', help='URL list file path', default='./urls.txt')
     parser.add_argument('-s', '--scroll_speed', help='Page scroll speed (min 1)', type=int, default='1')
+    parser.add_argument('-z', '--zoom_rate', help='Browser zoom rate', type=int, default='100')
     args = parser.parse_args()
 
     print("Display number: {}".format(args.display))
@@ -21,8 +22,9 @@ def get_args():
     if args.scroll_speed < 1:
         args.scroll_speed = 1
     print("Page scroll speed (min 1): {}".format(args.scroll_speed))
+    print("Browser zoom rate: {}".format(args.zoom_rate))
 
-    return args.display, args.interval, args.urls_file, args.scroll_speed
+    return args.display, args.interval, args.urls_file, args.scroll_speed, args.zoom_rate
 
 def load_urls_file(urls_file):
     urls = []
@@ -30,7 +32,7 @@ def load_urls_file(urls_file):
         urls = f.readlines()
     return urls
 
-def run_signage(display, interval, scroll_speed, urls):
+def run_signage(display, interval, scroll_speed, zoom_rate, urls):
     os.environ['DISPLAY'] = display
     driver = webdriver.Chrome()
     driver.fullscreen_window()
@@ -38,6 +40,7 @@ def run_signage(display, interval, scroll_speed, urls):
         print('Open URL: {}'.format(url))
         driver.get(url)
         time.sleep(interval)
+        driver.execute_script("document.body.style.zoom='{}%'".format(zoom_rate))
         height = driver.execute_script('return document.body.scrollHeight')
         for h in tqdm(range(1, height, scroll_speed)):
             driver.execute_script("window.scrollTo(0, {});".format(h))
@@ -45,10 +48,10 @@ def run_signage(display, interval, scroll_speed, urls):
 
 
 if __name__ == "__main__":
-    display, interval, urls_file, scroll_speed = get_args()
+    display, interval, urls_file, scroll_speed, zoom_rate = get_args()
     urls = load_urls_file(urls_file)
     while True:
-        run_signage(display, interval, scroll_speed, urls)
+        run_signage(display, interval, scroll_speed, zoom_rate, urls)
 
 
 
