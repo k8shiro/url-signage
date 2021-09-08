@@ -34,7 +34,9 @@ def load_urls_file(urls_file):
 
 def run_signage(display, interval, scroll_speed, zoom_rate, urls):
     os.environ['DISPLAY'] = display
-    driver = webdriver.Chrome()
+    options = webdriver.ChromeOptions()
+    options.add_experimental_option("excludeSwitches", ['enable-automation', 'load-extension'])
+    driver = webdriver.Chrome(chrome_options=options)
     driver.fullscreen_window()
     for url in urls:
         print('Open URL: {}'.format(url))
