@@ -62,6 +62,6 @@ optional arguments:
                         Browser zoom rate
 
 # 実行
-$ python src/main.py　--display=":0.0" -u=urls -s=10 -i=10
+$ nohup python src/main.py　--display=":0.0" -u=urls -s=10 -i=10 &
 
 ```
