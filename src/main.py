@@ -3,6 +3,7 @@ import os
 import argparse
 import time
 
+import selenium
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from tqdm import tqdm
@@ -39,13 +40,17 @@ def run_signage(display, interval, scroll_speed, zoom_rate, urls):
     driver = webdriver.Chrome(chrome_options=options)
     driver.fullscreen_window()
     for url in urls:
-        print('Open URL: {}'.format(url))
-        driver.get(url)
-        time.sleep(interval)
-        driver.execute_script("document.body.style.zoom='{}%'".format(zoom_rate))
-        height = driver.execute_script('return document.body.scrollHeight')
-        for h in tqdm(range(1, height, scroll_speed)):
-            driver.execute_script("window.scrollTo(0, {});".format(h))
+        try:
+            print('Open URL: {}'.format(url))
+            driver.get(url)
+            time.sleep(interval)
+            driver.execute_script("document.body.style.zoom='{}%'".format(zoom_rate))
+            height = driver.execute_script('return document.body.scrollHeight')
+            for h in tqdm(range(1, height, scroll_speed)):
+                driver.execute_script("window.scrollTo(0, {});".format(h))
+        except selenium.common.exceptions.TimeoutException as e:
+            print(e)
+            print("TimeoutException. Skip {}".format(url))
     driver.close()
 
 
