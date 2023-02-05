@@ -38,7 +38,7 @@ def run_signage(display, interval, scroll_speed, zoom_rate, urls):
     options = webdriver.ChromeOptions()
     options.add_experimental_option("excludeSwitches", ['enable-automation', 'load-extension'])
     driver = webdriver.Chrome(chrome_options=options)
-    driver.fullscreen_window()
+    driver.maximize_window()
     for url in urls:
         try:
             print('Open URL: {}'.format(url))
@@ -58,7 +58,11 @@ if __name__ == "__main__":
     display, interval, urls_file, scroll_speed, zoom_rate = get_args()
     urls = load_urls_file(urls_file)
     while True:
-        run_signage(display, interval, scroll_speed, zoom_rate, urls)
+        try:
+            run_signage(display, interval, scroll_speed, zoom_rate, urls)
+        except Exception as e:
+            print(e)
+
 
 
 
